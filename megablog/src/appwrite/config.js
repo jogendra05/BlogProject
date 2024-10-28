@@ -70,11 +70,46 @@ export class Service{
     // Get all Active Post
     async getPosts(queries = [Query.equal("status", "active")]){
         try{
-            return await this.databases.listDocuments()
+            return await this.databases.listDocuments(
+                conf.appwriteDatabaseId, conf.appwriteCollectionId, queries,
+            )
         }
         catch(error){
             console.log("Error :: getPosts", error)
         }
+    }
+
+    // file upload service
+    async uploadFile(file){
+        try{
+            return await this.bucket.createFile(
+                conf.appwriteBucketId, ID.unique(), file
+            )
+        }
+        catch(error){
+            console.log("Error :: uploadFile", error)
+        }
+    }
+
+    // Delete File
+    async deleteFile(fileId){
+        try{
+            await this.bucket.deleteFile(
+                conf.appwriteBucketId,
+                fileId
+            )
+            return true
+        }
+        catch(error){
+            console.log("Error :: deleteFile", error)
+        }
+    }
+
+    // File Preview
+    getFilePreview(fileId){
+        return this.bucket.getFilePreview(
+            conf.appwriteBucketId, fileId
+        )
     }
 }
 
