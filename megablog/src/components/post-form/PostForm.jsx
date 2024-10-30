@@ -19,7 +19,7 @@ function PostForm({post}) {
     const navigate = useNavigate()
     const userData = useSelector(state => state.auth.userData)
 
-    const submit = (data) => {
+    const submit = async (data) => {
         if(post){
             const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null
             if (file){
